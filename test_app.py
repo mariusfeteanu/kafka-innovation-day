@@ -53,7 +53,8 @@ async def test_pii(test_app):
     async with mask_pii.test_context() as agent:
         marius = RegisteredUser(account_id='kjduebvfds',
                                 email='marius.something@gmail.cob',
-                                name='Marius')
+                                name='Marius',
+                                user_topic='topic')
         await agent.put(marius)
 
         print(marius.to_representation())
@@ -66,6 +67,23 @@ async def test_pii(test_app):
         assert masked_marius.account_id == 'kjduebvfds'
         assert masked_marius.email =='boc.liamg@gnihtemos.suiram'
         assert masked_marius.name == 'suiraM'
+
+@pytest.mark.asyncio()
+async def test_animal_mapping(test_app):
+    async with add_fav_animal.test_context() as agent:
+        marius = RegisteredUser(account_id='kjduebvfds',
+                                email='marius.something@gmail.cob',
+                                name='Marius',
+                                user_topic='topic')
+
+        print(get_enriched_user(marius))
+
+        await agent.put(get_enriched_user(marius))
+
+        enriched_marius = agent.results[0]
+
+        assert enriched_marius.fav_animal == 'dog'
+
 
 # @pytest.mark.asyncio()
 # async def test_full_enquiry_completed(test_app):

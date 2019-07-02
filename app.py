@@ -14,7 +14,10 @@ class EnrichedUser(faust.Record, serializer='json'):
     account_id: str
     email: str
     name: str
-    fav_animal: str
+    user_topic: str
+    fav_animal:str
+
+
 
 class EnquiryInitiated(faust.Record, serializer='json'):
     enquiry_id: str
@@ -40,6 +43,7 @@ class FullEnquiryCompleted(faust.Record, serializer='json'):
     best_partner: str
 
 registered_topic = app.topic('registered_topic')
+enriched_topic = app.topic('enriched_topic')
 enquiry_initiated_topic = app.topic('enquiry_initiated_topic')
 enquiry_completed_topic = app.topic('enquiry_completed_topic')
 sale_completed_topic = app.topic('sale_completed_topic')
@@ -61,6 +65,7 @@ def get_enriched_user(user):
         account_id=user.account_id,
         email=user.email,
         name=user.name,
+        user_topic=user.user_topic,
         fav_animal=get_pet_by_user_id(user.account_id)
     )
 
@@ -87,11 +92,18 @@ async def mask_pii(registered_users):
         masked_user = mask_user(registered_user)
         yield masked_user
 
+@app.agent(enriched_topic)
+async def add_fav_animal(registered_users):
+    async for registered_user in registered_users:
+        enriched_user = get_enriched_user(registered_user)
+        yield enriched_user
+
 @app.agent(enquiry_initiated_topic)
 async def calculate_enquiries_per_date(enquiries_initiated):
     async for enquiry_initiated in enquiries_initiated:
         enquiry_initiated_table[(enquiry_initiated.product, enquiry_initiated.date)] += 1
         yield enquiry_initiated
+
 
 # @app.task()
 # async def full_enquiry_completed_stream():
