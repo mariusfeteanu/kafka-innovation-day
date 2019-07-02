@@ -9,6 +9,12 @@ class RegisteredUser(faust.Record, serializer='json'):
     email: str
     name: str
 
+class EnrichedUser(faust.Record, serializer='json'):
+    account_id: str
+    email: str
+    name: str
+    fav_animal: str
+
 class EnquiryInitiated(faust.Record, serializer='json'):
     enquiry_id: str
     date: str
