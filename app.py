@@ -53,6 +53,21 @@ def mask_user(user):
         name=user.name[::-1])
 
 
+preferences = {
+               '1': 'cat',
+               '2': 'cat',
+               '3': 'dog',
+               '4': 'cat',
+               '5': 'dog',
+               '6': 'dog',
+               '7': 'cat'
+               }
+
+
+def get_pet_by_user_id(user_id):
+    return preferences[user_id]
+
+
 @app.agent(registered_topic)
 async def mask_pii(registered_users):
     async for registered_user in registered_users:
