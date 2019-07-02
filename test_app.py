@@ -57,6 +57,7 @@ async def test_pii(test_app):
         await agent.put(marius)
 
         print(marius.to_representation())
+        #print(get_enriched_user(marius))
 
         assert len(agent.results) == 1
 

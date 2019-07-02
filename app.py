@@ -53,6 +53,15 @@ def mask_user(user):
         name=user.name[::-1])
 
 
+def get_enriched_user(user):
+    return EnrichedUser(
+        account_id=user.account_id,
+        email=user.email,
+        name=user.name,
+        fav_animal=get_pet_by_user_id(user.account_id)
+    )
+
+
 preferences = {
                '1': 'cat',
                '2': 'cat',
@@ -60,8 +69,9 @@ preferences = {
                '4': 'cat',
                '5': 'dog',
                '6': 'dog',
-               '7': 'cat'
-               }
+               '7': 'cat',
+               'kjduebvfds': 'dog'
+}
 
 
 def get_pet_by_user_id(user_id):
