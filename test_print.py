@@ -1,5 +1,8 @@
 import faust
+import pytest
 
+
+## App
 app = faust.App('test-example')
 
 test_topic = app.topic('test_topic')
@@ -12,19 +15,19 @@ async def greet(messages):
         yield message
 
 
-async def test_greet():
-    # start and stop the agent in this block
+
+## Tests
+@pytest.fixture()
+def test_app(event_loop):
+    """passing in event_loop helps avoid 'attached to a different loop' error"""
+    app.finalize()
+    app.conf.store = 'memory://'
+    app.flow_control.resume()
+    return app
+
+@pytest.mark.asyncio()
+async def test_greet(test_app):
     async with greet.test_context() as agent:
         await agent.put("Hello there")
         await agent.put("General Kenobi.")
-
-
-async def run_tests():
-    app.conf.store = 'memory://'   # tables must be in-memory
-    await test_greet()
-
-
-if __name__ == '__main__':
-    import asyncio
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_tests())
+            # mocked_bar.send.assert_called_with('hey')

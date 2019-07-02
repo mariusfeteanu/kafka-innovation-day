@@ -17,7 +17,7 @@ async def order(orders):
         orders_for_account[order.account_id] += 1
         yield order
 
-async def test_order():
+async def order_test():
     # start and stop the agent in this block
     async with order.test_context() as agent:
         o = Order(account_id='1', product_id='2', amount=1, price=300)
@@ -31,7 +31,7 @@ async def test_order():
 
 async def run_tests():
     app.conf.store = 'memory://'   # tables must be in-memory
-    await test_order()
+    await order_test()
 
 if __name__ == '__main__':
     import asyncio

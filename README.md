@@ -1,4 +1,8 @@
 # kafka-innovation-day
 
+### How to bootstrap
 pip install -r requirements.txt
-python test_order.py
+
+
+### How to run pytest
+pytest .
