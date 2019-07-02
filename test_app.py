@@ -47,23 +47,23 @@ async def test_calculate_enquiries_per_date(test_app):
     assert enquiry_initiated_table[('A', '2019-01-01')] == 1
     assert enquiry_initiated_table[('B', '2019-01-03')] == 2
 
-# @pytest.mark.asyncio()
-# async def test_pii(test_app):
-#     async with mask_pii.test_context() as agent:
-#         marius = RegisteredUser(account_id='kjduebvfds',
-#                                 email='marius.something@gmail.cob',
-#                                 name='Marius')
-#         await agent.put(marius)
-#
-#         print(marius.to_representation())
-#
-#         assert len(agent.results) == 1
-#
-#         masked_marius = agent.results[0]
-#
-#         assert masked_marius.account_id == 'kjduebvfds'
-#         assert masked_marius.email =='boc.liamg@gnihtemos.suiram'
-#         assert masked_marius.name == 'suiraM'
+@pytest.mark.asyncio()
+async def test_pii(test_app):
+    async with mask_pii.test_context() as agent:
+        marius = RegisteredUser(account_id='kjduebvfds',
+                                email='marius.something@gmail.cob',
+                                name='Marius')
+        await agent.put(marius)
+
+        print(marius.to_representation())
+
+        assert len(agent.results) == 1
+
+        masked_marius = agent.results[0]
+
+        assert masked_marius.account_id == 'kjduebvfds'
+        assert masked_marius.email =='boc.liamg@gnihtemos.suiram'
+        assert masked_marius.name == 'suiraM'
 
 # @pytest.mark.asyncio()
 # async def test_full_enquiry_completed(test_app):
