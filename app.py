@@ -8,6 +8,7 @@ class RegisteredUser(faust.Record, serializer='json'):
     account_id: str
     email: str
     name: str
+    user_topic: str
 
 class EnrichedUser(faust.Record, serializer='json'):
     account_id: str
@@ -50,7 +51,9 @@ def mask_user(user):
     return RegisteredUser(
         account_id=user.account_id,
         email=user.email[::-1],
-        name=user.name[::-1])
+        name=user.name[::-1],
+        user_topic=user.user_topic[::-1]
+    )
 
 
 @app.agent(registered_topic)
